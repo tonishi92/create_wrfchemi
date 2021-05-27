@@ -1,9 +1,6 @@
 #
 #
 #    Updates:
-#    v11 :
-#       * BC emissions estimated from VIIRS Heat Radiance by means of BC emissions of Caseiro
-#
 #    v10c:
 #       * ECLIPSE v6b : when GFED is used. sector awb is not used.
 #       * ECLIPSE v6b : Monthly factors are given by "ECLIPSE_V6a_monthly_pattern.nc"
@@ -33,106 +30,7 @@
 #       * format of keyname in emis_dict : <sec>_<spec> ---> <sec>-<<Inventory>>-<spec>
 #                                    e.g.) tra_CO ---------> tra-ECLIPSE-CO
 #        
-#  Options:
-#       * REAS_ANTH_VOC : REAS Anthoropogenic NMVOC (v2.1)
-#         - monthly data 
-#         - unit : [ton/month]
-#         - 0.25deg x 0.25deg
-#         - year : 2000 - 2008
-# 
-#       * REAS_ANTH_Other
-#         - monthly data
-#         - unit : [ton/month]
-#         - 0.25[deg] x 0.25[deg]
-#         - year : 2000 - 2008
 #
-#       * HTAP_ANTH_VOC
-#         - /data/raut/EMISSIONS/HTAP_v2/<year>/edgar_HTAP_NMVOC_emi_<sec>_<year>_<month>.0.1x0.1.nc
-#         - monthly data
-#         - 0.1[deg] x 0.1[deg]
-#         - year : 2008 or 2010 
-#
-#       * HTAP_ANTH_Other
-#          - /data/raut/EMISSIONS/HTAP_v2/<year>/edgar_HTAP_<spec>_emi_<sec>_<year>_<month>.0.1x0.1.nc
-#            <year>     : '2008' or '2010'
-#            <spec>     : ['BC','CO','NH3','NOx','OC','PM10','PM25','SO2']
-#            <sec>      : ['ENERGY','INDUSTRY','RESIDENTIAL','TRANSPORT','AGRICULTURE']
-#
-#       * HTAP_SHIP_AIR_VOC     
-#          - /data/raut/EMISSIONS/HTAP_v2/<year>/edgar_HTAP_NMVOC_emi_<sec>_<year>.0.1x0.1.nc
-#            <year>     : '2008' or '2010'
-#            <sec>      : ['AIR','SHIPS']
-#
-#       * HTAP_SHIP_AIR_Other 
-#          - /data/raut/EMISSIONS/HTAP_v2/<year>/edgar_HTAP_<spec>_emi_<sec>_<year>.0.1x0.1.nc
-#            <year>     : '2008' or '2010'
-#            <spec>     : ['BC','CO','NOx','OC','PM10','PM25','SO2']
-#            <sec>      : ['AIR','SHIPS']
-# 
-#       * ECLIPSE_ANTH_VOC      
-#          - /data/onishi/ECLIPSE_V6b/ETP_base_CLE_V6_VOC_<year>.nc
-#            keynames   : 'awb_VOC','dom_VOC','ene_VOC','ind_VOC','slv_VOC','tra_VOC','wst_VOC','all_VOC'
-#            dimension  : ['west_east','south_north']
-#          - annual data
-#          - 1.0[deg] x 1.0[deg]
-#          - <year>     : 1990, 1995, 2000, 2005, 2008, 2009, 2010, 2014, 2015, 2016, 2020, 2025, 2030, 2040
-#
-#       * ECLIPSE_ANTH_Other   
-#          - /data/onishi/ECLIPSE_V6b/ETP_base_CLE_V6_<spec>_<year>.nc
-#            keynames   : <sec>_<spec>
-#                 <sec>   : 'agr','awb','dom','ene','flr','ind','tra','wst','all'
-#                 <spec>  : ['CO','CH4','BC','OM','SO2','NH3','PM25','NOx']
-#          - annual data
-#          - 1.0[deg] x 1.0[deg]
-#          - <year>     : 1990, 1995, 2000, 2005, 2008, 2009, 2010, 2014, 2015, 2016, 2020, 2025, 2030, 2040
-#
-#       * HUANG_BC_EMISSION    
-#          - /data/onishi/BC_RUS/Huang/RUS_BC_2010_Huang.nc
-#            keynames   : <sec>_BC
-#                 <sec>   : 'dom','ene','flr','ind','tra','all'
-#          - annual data
-#          - 0.1 [deg] x 0.1 [deg]
-#          - year : 2010
-#
-#       * ECLIPSE_RCP60_SHP     
-#          - /data/quennehen/ECLIPSE/RCP60_AIR,SHP_2005,2010/
-#              1. IPCC_emissions_RCP60_NMVOC_ships_2005_0.5x0.5_v1_01_03_2010.nc
-#              2. IPCC_emissions_RCP60_NMVOC_ships_2010_0.5x0.5_v1_01_03_2010.nc
-#              3. IPCC_emissions_RCP60_<spec>_ships_2005_0.5x0.5_v1_01_03_2010.nc
-#              4. IPCC_emissions_RCP60_<spec>_ships_2010_0.5x0.5_v1_01_03_2010.nc
-#          - monthly data
-#          - 1.0[deg] x 1.0[deg]
-#          - input unit : [kg/m2/sec]
-#          - year : 2005, 2010
-#
-#       * POLMIP_DAILY_SOIL_NO  
-#          - /data/quennehen/EMISSIONS/POLMIP/emissions.NO.surface.1x1.nc'
-#            input unit : [molecules/cm2/sec]
-#          - daily data
-#          - 1.0[deg] x 1.0[deg] 
-#
-#       * POLMIP_DAILY_VOLC_SO2  
-#          - /data/quennehen/EMISSIONS/POLMIP/emissions.SO2.surface.1x1.nc'
-#            input unit : [molecules/cm2/sec]
-#          - daily data
-#          - 1.0[deg] x 1.0[deg] 
-#
-#       * LANA_MONTHLY_DMS     
-#          - /data/marelle/EMISSIONS/DMS_LANA/DMSclim_<month>.csv
-#          - monthly data
-#          - 1.0[deg] x 1.0[deg] 
-#          - unit       : [mol/m3]   
-#
-#       * GFED_FIRE   
-#          - /data/onishi/GFEDv4/fire_emissions_v4_R1/data/GFED4.1s_<year>.hdf5
-#          - monthly data
-#          - 0.25[deg] x 0.25[deg]
-#          - <year> : 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017_beta, 2018_beta
-#          - unit   : [g <spec>/m2/month]
-#    
-
-
-         
 
 from mpi4py import MPI
 import sys,getopt
@@ -258,10 +156,6 @@ def Obtain_factors():
   #===========================================================================
   #
   #                 Parameters used throughout the program
-  #
-  #       Reference: van der Gon, H. D., Hendriks, C., Kuenen, J., Segers, A., and Visschedijk, A.: 
-  #                  Description of Current Temporal Emission Patterns and Sensitivity of Predicted AQ 
-  #                  for Temporal Emission Patterns, EU FP7 MACC deliverable report D_D-EMIS_1.3, 2011.
   #
   #---------------------------------------------------------------------------
   # Factors per day. monday to sunday
@@ -1329,6 +1223,222 @@ def AddDict_POLMIP_Daily_vol_SO2_OnWRF( emis_dict, fname,\
   
   return emis_dict
 
+#
+#==========================================================================
+#
+#     DONE : Copy below function "AddDict_POLMIP_Daily_Soil_NO_OnWRF" 
+#            and rename it "AddDict_VIIRS_Daily_flr_BC_OnWRF"
+#     DONE : modifiy create_ECLIPSEv6b_w_flr_from_VIIRS_v2.py3 to create output emis_flr in units [kt/year]
+#            [kt/year] unit was kept to compare with ECLIPSE emission data.
+#     DONE : Adapt it to VIIRS flr BC
+#     DONE : check input and output units
+#
+#==========================================================================
+
+#-------------------------------------------------------------------
+#
+#  Read VIIRS flaring BC emission data 
+#  and interpolate it on to WRF grid
+#
+def AddDict_VIIRS_Daily_flr_BC_OnWRF( emis_dict, fname,\
+                    area_common_array, area_common_dict, emis_cell_area,\
+                    XLON, XLAT, start_dt, end_dt):
+  #
+  # Input  unit : [kt/year] 
+  # Output unit : [ug/m2/sec]      
+  #
+  #import datetime
+  keyname  = 'flr-VIIRS-BC'
+  if rank == 0:
+    print(keyname)
+  #
+  nc    = Dataset(fname,'r',format='NETCDF4')
+  #
+  #====================================================================
+  #--------------------------------------------------------------------
+  #
+  #  Get a list of variable names 
+  #  vars = [u'emis_flr', u'time', u'lat', u'lon']
+  #  nvars= 4
+  #  dimension = [366,360,720]
+  #  lon.shape[0] = 720
+  #  lat.shape[0] = 360
+  #  
+  #  Output: nvars : # of variables 
+  #          vars  : list of variable names
+  #
+  vars  = list(nc.variables.keys())
+  nvars = len(vars)
+  vars  = list(vars)
+  if rank == 0:
+    print(vars)
+  #
+  #=====================================================================
+  #---------------------------------------------------------------------
+  #
+  #  assign variables : 'lon' and 'lat' 
+  lon   = np.array(nc.variables["lon"])   #    0 < lon < 360   0.25:0.5:359.75
+  lat   = np.array(nc.variables["lat"])   #  -90 < lat <  90 -89.75:0.5: 89.75
+  #
+  #  assign variable : 'soil'
+  emis_tmp = np.array(nc.variables['emis_flr']) 
+  #
+  ### nanind = np.where(np.isnan(emis_tmp))              # Indices of NaN in emis_tmp
+  ### #emis_vname.append(var)                             # Create a list of variable name 
+  ### emis_tmp[nanind] = np.zeros_like(emis_tmp)[nanind] # Replace NaN with 0
+  ### #emis_nmvoc[:,:,iv-2] = np.transpose(emis_tmp[:,:]) # Set data to 'emis_nmvoc' [lon,lat,nvar]
+  #
+  #----------------------------------------------------------------------
+  #
+  #  Change the order of indexing
+  #
+  emis_tmp   = np.transpose(emis_tmp)     # [time,lat,lon] ---> [lon,lat,time]
+  #  
+  #======================================================================
+  #----------------------------------------------------------------------
+  #
+  #  Expand longitude range from 0 < lon < 360 to -180 < lon < 360
+  #
+  #  Output: emis_tmp[nlon+nlon/2,nlat,366]
+  #          emis_lon[nlon+nlon/2,nlat] (only used here)
+  #          emis_lat[nlon+nlon/2,nlat] (only used here)
+  #
+  emis_tmp   = np.concatenate((emis_tmp[-emis_tmp.shape[0]//2:,:,:],emis_tmp[:,:,:]),axis=0)
+  #  
+  #======================================================================
+  #----------------------------------------------------------------------
+  #
+  #  Units : [kt/year] --> [ug/sec/m2]
+  #  
+  #  1.e0 [kt] = 1.e3[t] = 1.e6[kg] = 1.e9[g] = 1.e12[mg] = 1.e15[ug]
+  #
+  for iday in np.arange(366):
+    emis_tmp[:,:,iday] = np.divide(emis_tmp[:,:,iday],emis_cell_area)
+    emis_tmp[:,:,iday] *= 1.e15/(365.0*24.0*60.0*60.0)
+  #
+  #===========================================================================================
+  #-------------------------------------------------------------------------------------------
+  #  variable : 'soil'
+  #
+  # New Grid Dimensions
+  ng_we_wrf = XLON.shape[0]
+  ng_sn_wrf = XLON.shape[1]
+  #
+  emis_wrf  = np.zeros(shape=(ng_we_wrf,ng_sn_wrf,366))
+  #
+  dt  = [] 
+  start_time = datetime(2014,start_dt.month,start_dt.day,0,0)
+  end_time   = datetime(2014,  end_dt.month,  end_dt.day,0,0)
+  #
+  for iday in np.arange(366):
+    dt_temp = datetime(2014,1,1,0,0) + timedelta(days=int(iday))
+    if dt_temp < start_time or dt_temp > end_time:
+      continue
+    dt.append(dt_temp)
+    if rank == 0:
+      print(iday, '/366')
+    for c in np.arange(ng_we_wrf):                          # Loop over west_east index of wrf grid (wrfinput_d01)
+      for r in np.arange(ng_sn_wrf):                        # Loop over south_north index of wrf grid (wrfinput_d01)
+        if 1==0:
+          #... Common to WRF grid ........................
+          #    Index ranges of 'west-east' and 'south-north' variables of emission grid. 
+          #    
+          ind_lon_min = int(area_common_array[c,r,0])
+          ind_lon_max = int(area_common_array[c,r,1])
+          ind_lat_min = int(area_common_array[c,r,2])
+          ind_lat_max = int(area_common_array[c,r,3])
+          #
+          count            = 1           # index counter for 3rd index of area_common_array[c,r,3+count]
+          emis_wrf_temp    = 0.0         # temp. variable of emission on a wrf grid
+          ## area_all    = 0.0         # checking parameter : should be 1.0 after the loop
+          #
+          # Loops over "ilon" 'west-east (longitude)' and "ilat" 'south-north (latitude)' 
+          # index of emission grid 
+          # Only those containing a wrf cell (XLON[c,r],XLAT[c,r]) defined by 4 points [X,Y]
+          #
+          if np.amax(emis_tmp[ind_lon_min:ind_lon_max,ind_lat_min:ind_lat_max,iday]) != 0.0:
+            for ilon in np.arange(ind_lon_min,ind_lon_max):      
+              for ilat in np.arange(ind_lat_min,ind_lat_max):    
+                if emis_tmp[ilon,ilat,iday] != 0.0 :     # Just to avoid a useless computation 
+                  area_temp     = area_common_array[c,r,3+count]     # Area ratio (area of emission grid (ilon,ilat) shared with a wrf grid)/(area of emission grid)
+                  emis_wrf_temp = emis_wrf_temp+area_temp*emis_tmp[ilon,ilat,iday]
+                #area_all    = area_all + area_temp
+                count += 1
+            # End of for ilon and ilat
+            #print 'area_all = ',area_all
+            #print c,'/',ng_we_wrf,' ',r,'/',ng_sn_wrf,emis_wrf
+        #
+        #---- Using area_common_dict ------------------------------------------------
+        #
+        if 1==1:
+          emis_wrf_temp = 0.0
+          for idict in np.arange(area_common_dict[c][r]['total_count']):
+            ilon = area_common_dict[c][r][idict]['ilon']
+            ilat = area_common_dict[c][r][idict]['ilat']
+            emis_wrf_temp += area_common_dict[c][r][idict]['area']*emis_tmp[ilon,ilat,iday]
+        #
+        #---- End of Using area_common_dict ------------------------------------------
+        # 
+        emis_wrf[c,r,iday] = emis_wrf_temp
+      # End of loop r
+    # End of loop c
+  # End of loop iday
+  #
+  #-----------------------------------------------------------
+  #
+  emis_dict[keyname]={}                                  # Create a dictionary entry with a 'shp_NMVOC'iable name ''shp_NMVOC''
+  emis_dict[keyname]['dimensions']={}
+  emis_dict[keyname]['dimensions']['south_north']= ng_sn_wrf # of grid points in sn direction 
+  emis_dict[keyname]['dimensions']['west_east']  = ng_we_wrf # of grid points in we direction
+  emis_dict[keyname]['dimensions']['time']       = 366       # of points in time series> e.g.:12
+  emis_dict[keyname]['west_east']={}
+  emis_dict[keyname]['west_east']['dtype']='i4'
+  emis_dict[keyname]['west_east']['dims' ]=['west_east']
+  emis_dict[keyname]['west_east']['units']=''
+  emis_dict[keyname]['west_east']['data' ]=np.arange(ng_we_wrf) # : [0,1,2,3,4,5,...,ng_we_wrf-1]
+  emis_dict[keyname]['south_north']={}
+  emis_dict[keyname]['south_north']['dtype']='i4'
+  emis_dict[keyname]['south_north']['dims' ]=['south_north']
+  emis_dict[keyname]['south_north']['units']=''
+  emis_dict[keyname]['south_north']['data' ]=np.arange(ng_sn_wrf) # : [0,1,2,3,4,5,...,ng_sn_wrf-1]
+  emis_dict[keyname]['longitude']={}
+  emis_dict[keyname]['longitude']['dtype']='f4'
+  emis_dict[keyname]['longitude']['dims' ]=['west_east','south_north']
+  emis_dict[keyname]['longitude']['units']='degrees_east'
+  emis_dict[keyname]['longitude']['data' ]=XLON[:,:] # <WRF longitude grid>
+  emis_dict[keyname]['latitude']={}
+  emis_dict[keyname]['latitude']['dtype']='f4'
+  emis_dict[keyname]['latitude']['dims' ]=['west_east','south_north']
+  emis_dict[keyname]['latitude']['units']='degrees_east'
+  emis_dict[keyname]['latitude']['data' ]=XLAT[:,:]  # <WRF latitude grid>
+  emis_dict[keyname]['time']={}
+  emis_dict[keyname]['time']['dtype']='datetime'
+  emis_dict[keyname]['time']['dims' ]=['time']
+  emis_dict[keyname]['time']['data' ]=dt[:] # [datetime(2014,1,1),datetime(2014,1,2),....,datetime(2015,1,1)]
+  emis_dict[keyname]['voc']={}
+  emis_dict[keyname]['voc']['dtype']='f4'
+  emis_dict[keyname]['voc']['dims' ]=['west_east','south_north','time']
+  #emis_dict[keyname]['voc']['dims' ]=['west_east','south_north']
+  emis_dict[keyname]['voc']['units']='ug/m2/sec'
+  emis_dict[keyname]['voc']['data' ]= emis_wrf[:,:,:] # <emissions data on WRF Grid> : e.g.) emis_temp[:<we>,:<sn>,:<time>]
+  
+  return emis_dict
+
+
+
+
+
+#
+#==========================================================================
+#
+#     DONE : Copy above function "AddDict_POLMIP_Daily_Soil_NO_OnWRF" 
+#            and Adapt it to VIIRS flr BC
+#            and rename it "AddDict_VIIRS_Daily_flr_BC_OnWRF"
+#
+#==========================================================================
+
+
+
 #-------------------------------------------------------------------
 #
 #  Read POLMIP Daily Soil NOx Surface emission data
@@ -2269,7 +2379,7 @@ def AddDict_GFED_Fire_OnWRF( emis_dict, dname, \
     #
     for spec_temp in spec_list:
 
-      keyname   = spec_temp+'-GFED-'+datetime_str
+      keyname = spec_temp+'-GFED-'+datetime_str
       GFED_unit = EFs[spec_temp]['unit'].split('/kg')[0]+'/m2/sec'
 
       if keyname not in emis_dict.keys():
@@ -2664,7 +2774,7 @@ def AddDict_ECLIPSE_Anth_Other_OnWRF_v2( emis_dict, fname, fname_monthly_partiti
   vars  = list(nc.variables.keys())
   nvars = len(vars)
   vars  = list(vars)
-  # print vars
+  print('xxx vars --->', vars)
   #
   #=====================================================================
   #---------------------------------------------------------------------
@@ -2674,7 +2784,7 @@ def AddDict_ECLIPSE_Anth_Other_OnWRF_v2( emis_dict, fname, fname_monthly_partiti
   lat   = np.array(nc.variables["lat"])   #  -90 < lat <  90
   #
   for iv, var in enumerate(vars):
-    # print iv, var
+    print('xxx --->', iv, var)
     #
     # iv = 0 : 'lat'
     # iv = 1 : 'lon'
@@ -2832,6 +2942,8 @@ def AddDict_ECLIPSE_Anth_Other_OnWRF_v2( emis_dict, fname, fname_monthly_partiti
       spec_arr = ['NO','NO2']
       coef_arr = [0.9,0.1]        # NO/NO2 ratio 0.9:0.1
 
+    print('xxx --->', sec_arr)
+    print('xxx --->', spec_arr)
     for isec, sec2 in enumerate(sec_arr):
       for ispec, spec2 in enumerate(spec_arr):
         Mm = 1.0
@@ -2840,7 +2952,7 @@ def AddDict_ECLIPSE_Anth_Other_OnWRF_v2( emis_dict, fname, fname_monthly_partiti
           Mm = Mmol[spec2]
         keyname = sec2+'-ECLIPSE-'+spec2
         if rank == 0:
-          print(keyname)
+          print('xxx --->',keyname)
         emis_dict[keyname]={}                                  # Create a dictionary entry with a keynameiable name 'keyname'
         emis_dict[keyname]['dimensions']={}
         emis_dict[keyname]['dimensions']['south_north']= ng_sn_wrf # of grid points in sn direction 
@@ -5796,22 +5908,27 @@ def Get_Anthropogenic_Emissions_From_IIASA():
 data_description = ''
 REAS_ANTH_VOC         = False
 REAS_ANTH_Other       = False
-HTAP_ANTH_VOC         = True 
-HTAP_ANTH_Other       = True 
+HTAP_ANTH_VOC         = False 
+HTAP_ANTH_Other       = False 
 HTAP_SHIP_AIR_VOC     = False 
-HTAP_SHIP_AIR_Other   = True 
-ECLIPSE_ANTH_VOC      = False 
-ECLIPSE_ANTH_Other    = False
-ECLIPSEinUse          = False 
+HTAP_SHIP_AIR_Other   = False 
+ECLIPSE_ANTH_VOC      = True 
+ECLIPSE_ANTH_Other    = True
+ECLIPSEinUse          = True 
+
+VIIRS_BCflr           = False 
+
 HUANG_BC_EMISSION     = False
 ECLIPSE_RCP60_SHP     = False 
-POLMIP_DAILY_SOIL_NO  = True  
-POLMIP_DAILY_VOLC_SO2 = True   
-LANA_MONTHLY_DMS      = True 
+POLMIP_DAILY_SOIL_NO  = False  
+POLMIP_DAILY_VOLC_SO2 = False   
+LANA_MONTHLY_DMS      = False 
 GFED_FIRE             = False
 
 #wrfdir   = '/data/onishi/AMAP_2015B/'
 wrfdir   = '/data/onishi/WRFrun_TestHTAPPolarStereo/'
+wrfdir   = '/data/onishi/WRFrun_YAKVIIRS/'
+#wrfdir   = '/data/onishi/WRFrun_JCR/PWRF3911_LATMOS_JCR_TO/WRFV3/run_TO/'
 #wrfdir   = '/homedata/onishi/AMAP/'
 
 #out_dir  = '/data/onishi/EMISSIONS/Create_Emissions/AMAP/GFED_only/'
@@ -5825,6 +5942,11 @@ out_dir  = '/data/onishi/EMISSIONS/Create_Emissions/AMAP_2015A_v10c/'
 out_dir  = '/data/onishi/EMISSIONS/Create_Emissions/AMAP_2015B_v10c/'
 out_dir  = '/data/onishi/EMISSIONS/Create_Emissions/HTAP_Lefteris_test/'
 out_dir  = '/data/onishi/EMISSIONS/Create_Emissions/HTAP_TestPolarStereo/'
+out_dir  = '/data/onishi/EMISSIONS/Create_Emissions/Test_ndown/'
+out_dir  = '/data/onishi/EMISSIONS/Create_Emissions/WRFrun_YAKVIIRS/'
+#out_dir  = '/data/onishi/EMISSIONS/Create_Emissions/WRFrun_YAKVIIRS_BCreplaced/'
+#out_dir  = '/data/onishi/EMISSIONS/Create_Emissions/WRFrun_JCR_PWRF3911_TO/'
+
 if not os.path.exists(out_dir):
   os.makedirs(out_dir)
 
@@ -6084,6 +6206,19 @@ except:
   Grid05 = ECLIPSE_ANTH_Other
 #
 #-----------------------------------------------------------------------------------------------
+#          - /data/onishi/VIIRS/python/test_daily.nc
+#            keynames   : flr-VIIRS-BC
+#            dimension  : ['west_east','south_north']
+#            new unit   : [ug/sec/m2]
+#
+if VIIRS_BCflr:
+  data_description = data_description + '//ECLIPSE v6b flr BC is replaced by VIIRS BC emission '
+try:
+  Grid05 = Grid05 or VIIRS_BCflr
+except:
+  Grid05 = VIIRS_BCflr
+#
+#-----------------------------------------------------------------------------------------------
 #          - /data/onishi/BC_RUS/Huang/RUS_BC_2010_Huang.nc
 #            keynames   : <sec>_BC
 #                 <sec>   : 'dom','ene','flr','ind','tra','all'
@@ -6175,8 +6310,12 @@ else:
   outdir = './'+outdir[-1]+'/'
 
 start_dt_namelist, end_dt_namelist, max_dom = get_Start_datetime_and_End_datetime(namelist)
-#start_dt_namelist = datetime(2017,7,19,0)
-#end_dt_namelist = datetime(2014,1,7,0)
+#
+#--- hardcode start and end datetime for checking -----
+start_dt_namelist = datetime(2014,3,1,0)
+end_dt_namelist = datetime(2014,11,30,0)
+#------------------------------------------------------
+
 print(start_dt_namelist)
 print(end_dt_namelist)
 
@@ -6187,7 +6326,8 @@ deltaday = 1
 nday = (end_dt_namelist-start_dt_namelist).days
 print(nday/deltaday)
 
-dhour = 1
+dhour = 1 
+dhour = 24 
 
 for iiday in np.arange(nday/deltaday+1):
   if iiday % size != rank:
@@ -8077,6 +8217,7 @@ for iiday in np.arange(nday/deltaday+1):
       fnames        = glob.glob('/data/onishi/ECLIPSE_V6b/ETP_base_CLE_V6_*_'+year_str+'.nc')
       fn_month_part = '/data/onishi/ECLIPSE_V6b/ECLIPSE_V6a_monthly_pattern.nc'
       for ifile, fn in enumerate(fnames): 
+        #print(ifile, fn, ' <--- Check filenames')
         #
         nc        = Dataset(fn,'r',format='NETCDF4')
         lon       = np.array(nc.variables["lon"])
@@ -8096,6 +8237,30 @@ for iiday in np.arange(nday/deltaday+1):
                                 area_common_array05,area_common_dict05,emis_cell_area05,\
                                 XLON,XLAT)
         #
+        #=================================
+        #
+        #  DONE: If VIIRS flr BC is used, make ECLIPSE flr BC all zero
+        #         Add a snippet below
+        #
+        #================================
+        #
+        if VIIRS_BCflr and '_BC_' in fn:
+          ### sorted_key_list = [] 
+          ### for key in emis_dict:
+          ###   sorted_key_list.append(key)
+          ### #  plot_emis_dict(key)
+          ### for ikey, key in enumerate(sorted(sorted_key_list)):
+          ###   print( ikey, key)
+          ### # raw_input()
+          emis_dict['flr-ECLIPSE-BC']['voc']['data'] *= 0.0 
+
+        #
+        #=================================
+        #
+        #  DONE: If VIIRS flr BC is used, make ECLIPSE flr BC all zero
+        #         Add a snippet above
+        #
+        #================================
       #
       ### if rank == 0:
       ###   sorted_key_list = [] 
@@ -8279,16 +8444,16 @@ for iiday in np.arange(nday/deltaday+1):
                               XLON,XLAT)
       #
       #
-      sorted_key_list = [] 
-      for key in emis_dict:
-      #  print key
-        if 'BC' in key:
-          sorted_key_list.append(key)
-      #  plot_emis_dict(key)
-      if rank == 0:
-        print(datetime.now())
-        for ikey, key in enumerate(sorted(sorted_key_list)):
-          print(ikey, key)
+      ### sorted_key_list = [] 
+      ### for key in emis_dict:
+      ### #  print key
+      ###   if 'BC' in key:
+      ###     sorted_key_list.append(key)
+      ### #  plot_emis_dict(key)
+      ### if rank == 0:
+      ###   print(datetime.now())
+      ###   for ikey, key in enumerate(sorted(sorted_key_list)):
+      ###     print(ikey, key)
       #raw_input()
       #sys.exit()
       
@@ -8406,7 +8571,104 @@ for iiday in np.arange(nday/deltaday+1):
       ### print 'plot_emis_dict'
       ### plot_emis_dict('shp_BC',1)
       ### raw_input()
+   
+    #
+    #===== DONE: COPY BELOW POLMIP Daily emission and ================================
+    #             adapt it to VIIRS_BCflr 
+    #      DONE : Create a function "AddDict_VIIRS_Daily_flr_BC_OnWRF
+    #
+    #===================================================================================
+    #
+    #       * VIIRS  Daily flr BC surface emissions
+    #
+    #          ____INPUT____
+    #
+    #          - /data/onishi/VIIRS/python/test_daily.nc
+    #
+    #            variable  : 'emis_flr'
+    #            resolution: 0.5 deg x 0.5 deg
+    #            dimension : [time,lat,lon] (366,360,720)
+    #            unit      : [kt/year]
+    #
+    #          ____OUTPUT____
+    #
+    #            "emis_dict": dictionary : emission on WRF grid
+    #            keynames   : 'flr-VIIRS-BC'
+    #            dimension  : [lon,lat,time] 
+    #            unit       : [ug/sec/m2]   
+    #            example    :
+    #               emis_dict[keyname]={}                                  # Create a dictionary entry with a 'shp_NMVOC'iable name ''shp_NMVOC''
+    #               emis_dict[keyname]['dimensions']={}
+    #               emis_dict[keyname]['dimensions']['south_north']= ng_sn_wrf # of grid points in sn direction 
+    #               emis_dict[keyname]['dimensions']['west_east']  = ng_we_wrf # of grid points in we direction
+    #               emis_dict[keyname]['dimensions']['time']       = 366       # of points in time series> e.g.:days from 2012/01/01 to 2013/01/01
+    #               emis_dict[keyname]['west_east']={}
+    #               emis_dict[keyname]['west_east']['dtype']='i4'
+    #               emis_dict[keyname]['west_east']['dims' ]=['west_east']
+    #               emis_dict[keyname]['west_east']['units']=''
+    #               emis_dict[keyname]['west_east']['data' ]=np.arange(ng_we_wrf) # : [0,1,2,3,4,5,...,ng_we_wrf-1]
+    #               emis_dict[keyname]['south_north']={}
+    #               emis_dict[keyname]['south_north']['dtype']='i4'
+    #               emis_dict[keyname]['south_north']['dims' ]=['south_north']
+    #               emis_dict[keyname]['south_north']['units']=''
+    #               emis_dict[keyname]['south_north']['data' ]=np.arange(ng_sn_wrf) # : [0,1,2,3,4,5,...,ng_sn_wrf-1]
+    #               emis_dict[keyname]['longitude']={}
+    #               emis_dict[keyname]['longitude']['dtype']='f4'
+    #               emis_dict[keyname]['longitude']['dims' ]=['west_east','south_north']
+    #               emis_dict[keyname]['longitude']['units']='degrees_east'
+    #               emis_dict[keyname]['longitude']['data' ]=XLON[:,:] # <WRF longitude grid>
+    #               emis_dict[keyname]['latitude']={}
+    #               emis_dict[keyname]['latitude']['dtype']='f4'
+    #               emis_dict[keyname]['latitude']['dims' ]=['west_east','south_north']
+    #               emis_dict[keyname]['latitude']['units']='degrees_east'
+    #               emis_dict[keyname]['latitude']['data' ]=XLAT[:,:]  # <WRF latitude grid>
+    #               emis_dict[keyname]['time']={}
+    #               emis_dict[keyname]['time']['dtype']='datetime'
+    #               emis_dict[keyname]['time']['dims' ]=['time']
+    #               emis_dict[keyname]['time']['data' ]=dt[:] # [datetime(2014,1,1),datetime(2014,1,2),....,datetime(2015,1,1)]
+    #               emis_dict[keyname]['voc']={}
+    #               emis_dict[keyname]['voc']['dtype']='f4'
+    #               emis_dict[keyname]['voc']['dims' ]=['west_east','south_north','time'] 
+    #               # emis_dict[keyname]['voc']['dims' ]=['west_east','south_north']
+    #               emis_dict[keyname]['voc']['units']='ug/m2/sec'
+    #               emis_dict[keyname]['voc']['data' ]= emis_wrf[:,:,:] # <emissions data on WRF Grid> : e.g.) emis_temp[:<we>,:<sn>,:<time>]
+    #===================================================================================
     
+    if VIIRS_BCflr:
+      filename  = '/data/onishi/VIIRS/python/test_daily.nc'
+      #
+      nc        = Dataset(filename,'r',format='NETCDF4')
+      lon       = np.array(nc.variables["lon"])
+      nc.close()
+      if lon[1]-lon[0] != 0.5:
+        sys.exit("check the resolution of emission data :"+filename)
+      #
+      # ADD  : 'flr-VIIRS-BC'
+      #
+      # UNIT : [kt/year] --> [ug/sec/m2]
+      #
+      emis_dict = AddDict_VIIRS_Daily_flr_BC_OnWRF( emis_dict,  filename,\
+                              area_common_array05,area_common_dict05,emis_cell_area05,\
+                              XLON,XLAT,start_dt,end_dt)
+      # 
+      # for key in emis_dict:
+      #   if 'VIIRS' in key:
+      #     print key
+      # raw_input()
+      #
+      # print 'plot_emis_dict'
+      # plot_emis_dict('flr_BC',1)
+      # raw_input()
+
+
+
+
+    #
+    #===== DONE: COPY ABOVE POLMIP Daily emission and ================================
+    #             adapt it to VIIRS_BCflr 
+    #      DONE : Create a function "AddDict_VIIRS_Daily_flr_BC_OnWRF
+    #
+ 
     
     #===================================================================================
     #
@@ -8643,7 +8905,6 @@ for iiday in np.arange(nday/deltaday+1):
     if LANA_MONTHLY_DMS:
       dname  = '/data/marelle/EMISSIONS/DMS_LANA/'
       #
-      #
       # ADD   : 'DMS_OC'
       # UNIT  : [mol/cm3] --> [mol/m3]
       # 
@@ -8667,101 +8928,7 @@ for iiday in np.arange(nday/deltaday+1):
       ##   print ikey, key
       ## raw_input()
    
-   
     
-
-    #===================================================================================
-    #
-    #       * BC emissions from VIIRS Heat Radiance (Added in v11)
-    #
-    #          ____INPUT____
-    #
-    #          - /data/onishi/VIIRS/data/Prerun/<year>_flaresOnly/VNF_npp_d<year><month><day>_noaa_v21.flares_only.csv
-    #
-    #            <year>    : year  (*)
-    #            <month>   : month (*)
-    #            <day>     : day   (*)
-    #            (*)       : data set is ALMOST daily, but some date are missing 
-    #                      : For example, for year 2014, data is available from March 28th
-    #
-    #            variables (point data) :
-    #             'id'        : IR-source ID. Values are only unique for each input M10 file.
-    #             'Date_Proc' : Date/time of Nightfire processing. units [date-time]
-    #             'Date_Mscan': IR-source pixel date-time at mid-scan [date-time]
-    #             'Lat_GMTCO' : IR-source pixel latitude from VIIRS geolocation GMTCO file (terrain corrected) [deg]
-    #             'Lon_GMTCO' : IR-source pixel longitude from VIIRS geolocation GMTCO file (terrain corrected) [deg]
-    #             'Temp_BB'   : IR-source temperature assuming blackbody source (derived using Nightfire algorithm) [K]
-    #             'COT_IVCOP' : Cloud optical thickness from VIIRS IVCOP file [unitless]
-    #             'Rad_M10'   : Radiance of IR-source pixel in VIIRS M10 band (1.61um) [W/m2/sr/um]
-    #             'QF1_M10'   : VIIRS M10 band quality flag 1 [unitless]
-    #             'RHI'       : IR-source radiant heat intensity (derived using Nightfire algorithm) [W/m2]
-    #             'RH'        : IR-source radiant heat (derived using Nightfire algorithm) [W]
-    #             'CO2_EQ'    : Carbon dioxide equivalent as emission (derived using Nightfire algorithm) [g/sec]
-    #             'Area_BB'   : Area of IR-source assuming blackbody source (derived using Nightfire algorithm) [m2]
-    #
-    #          ____Intermediate___
-    #            "emis_dict": dictionary : emission on WRF grid
-    #            keynames   : '<spec>-VIIRS-YYYYMMDD'
-    #            resolution: 0.25 deg x 0.25 deg
-    #            dimension  : [lon,lat,time] (1440,720,ntime) (ntime:hourly output from start_dt to end_dt)
-    #            unit       : [g/sec/m2]    
-    #
-    #          ____OUTPUT____
-    #
-    #            "emis_dict": dictionary : emission on WRF grid
-    #            keynames   : '<spec>-VIIRS-YYYYMMDD'
-    #            resolution: 0.25 deg x 0.25 deg
-    #            dimension  : [lon,lat,time] (1440,720,ntime) (ntime:hourly output from start_dt to end_dt)
-    # toUpdate           unit       : [ug/sec/m2] or [mol/sec/m2]   
-    #            example    :
-    #               emis_dict[keyname]={}                                  # Create a dictionary entry with a 'shp_NMVOC'iable name ''shp_NMVOC''
-    #               emis_dict[keyname]['dimensions']={}
-    #               emis_dict[keyname]['dimensions']['south_north']= ng_sn_wrf # of grid points in sn direction 
-    #               emis_dict[keyname]['dimensions']['west_east']  = ng_we_wrf # of grid points in we direction
-    #               emis_dict[keyname]['dimensions']['time']       = ntime     # of points in time series 
-    # toUpdate              emis_dict[keyname]['west_east']={}
-    # toUpdate              emis_dict[keyname]['west_east']['dtype']='i4'
-    # toUpdate              emis_dict[keyname]['west_east']['dims' ]=['west_east']
-    # toUpdate              emis_dict[keyname]['west_east']['units']=''
-    # toUpdate              emis_dict[keyname]['west_east']['data' ]=np.arange(ng_we_wrf) # : [0,1,2,3,4,5,...,ng_we_wrf-1]
-    # toUpdate              emis_dict[keyname]['south_north']={}
-    # toUpdate              emis_dict[keyname]['south_north']['dtype']='i4'
-    # toUpdate              emis_dict[keyname]['south_north']['dims' ]=['south_north']
-    # toUpdate              emis_dict[keyname]['south_north']['units']=''
-    # toUpdate              emis_dict[keyname]['south_north']['data' ]=np.arange(ng_sn_wrf) # : [0,1,2,3,4,5,...,ng_sn_wrf-1]
-    # toUpdate              emis_dict[keyname]['longitude']={}
-    # toUpdate              emis_dict[keyname]['longitude']['dtype']='f4'
-    # toUpdate              emis_dict[keyname]['longitude']['dims' ]=['west_east','south_north']
-    # toUpdate              emis_dict[keyname]['longitude']['units']='degrees_east'
-    # toUpdate              emis_dict[keyname]['longitude']['data' ]=XLON[:,:] # <WRF longitude grid>
-    # toUpdate              emis_dict[keyname]['latitude']={}
-    # toUpdate              emis_dict[keyname]['latitude']['dtype']='f4'
-    # toUpdate              emis_dict[keyname]['latitude']['dims' ]=['west_east','south_north']
-    # toUpdate              emis_dict[keyname]['latitude']['units']='degrees_east'
-    # toUpdate              emis_dict[keyname]['latitude']['data' ]=XLAT[:,:]  # <WRF latitude grid>
-    # toUpdate              emis_dict[keyname]['time']={}
-    # toUpdate              emis_dict[keyname]['time']['dtype']='datetime'
-    # toUpdate              emis_dict[keyname]['time']['dims' ]=['time']
-    # toUpdate              emis_dict[keyname]['time']['data' ]=dt[:] # [1,2,3,4,....,12]
-    # toUpdate              emis_dict[keyname]['voc']={}
-    # toUpdate              emis_dict[keyname]['voc']['dtype']='f4'
-    # toUpdate              emis_dict[keyname]['voc']['dims' ]=['west_east','south_north','time'] 
-    # toUpdate              # emis_dict[keyname]['voc']['dims' ]=['west_east','south_north']
-    # toUpdate              emis_dict[keyname]['voc']['units']='mol/m2/month' or 'ug/m2/month'
-    # toUpdate              emis_dict[keyname]['voc']['data' ]= emis_wrf[:,:,:] # <emissions data on WRF Grid> : e.g.) emis_temp[:<we>,:<sn>,:<time>]
-    #===================================================================================
-
-
-
-
-
-
-
-
-
-
-
- 
     #===================================================================================
     #
     #       * GFED fire emissions                                        
@@ -9127,6 +9294,116 @@ for iiday in np.arange(nday/deltaday+1):
     ## #  plot_emis_dict(key)
     ## for ikey, key in enumerate(sorted(sorted_key_list)):
     ##   print ikey, key, emis_dict[key]['voc']['units'], emis_dict[key]['voc']['dims']
+
+
+
+
+
+
+
+
+
+
+
+    #
+    #======== DONE: COPY BELOW TO CREATE a emis_dict[keyname] for VIIRS BC flr data ========
+    #         DONE: adapt below for VIIRS BC flr data 
+    # 
+
+    #--------------------------------------------------------------------------------
+    #
+    # INTERPOLATION : (lon,lat,366)[daily] --> (lon,lat)[hourly] 
+    # VIIRS         : BC flaring
+    # 
+    #    Input unit : [ug/m2/sec]
+    #    Output unit: [ug/m2/sec]
+    #
+    #---------------------------------------------------------------------------------
+    if rank == 0:
+      print('------------------------------------')
+      print('')
+      print(datetime.now(),' SECTION : same value for the same day (no variation during the day)')
+      print('INTERPOLATION : (lon,lat,366)[daily] --> (lon,lat)[hourly] (VIIRS flr BC )') 
+      print('')
+      print('------------------------------------')
+    
+    keyname_list = []
+    for keyname in emis_dict:
+      dims = emis_dict[keyname]['voc']['dims']
+      if len(dims) == 3:
+        ntimes = emis_dict[keyname]['dimensions']['time']
+        if ntimes == 366:
+          keyname_list.append(keyname)
+    #
+    for ikeyname, keyname in enumerate(keyname_list):
+      if rank == 0:
+        print('INTERPOLATION 02 : ', keyname,' (', ikeyname, '/', len(keyname_list),')')
+      sec     = keyname.split('-')[0]
+      dt_temp = start_dt
+      while dt_temp <= end_dt:
+        doy      = dt_temp.timetuple().tm_yday-1
+        year     = dt_temp.year
+        month    = dt_temp.month
+        day      = dt_temp.day
+        hour     = dt_temp.hour
+        day_of_week = dt_temp.weekday()
+        units    = emis_dict[keyname]['voc']['units'].lower()
+        ### # print keyname, year, month, day, hour, units, doy
+        ### #debug#emis_data= np.array(emis_dict[keyname]['voc']['data'])[:,:,doy]
+        emis_data= np.copy(emis_dict[keyname]['voc']['data'][:,:,doy])
+        ### # unit : mol/m2/sec   --> mol/km2/day
+        ### emis_data *= 1.e6*60.0*60.0*24.0
+        ### # unit : mol/km2/day  --> mol/km2/hour
+
+        ## hour2 = np.rint(XLON/15.0)+hour
+        ### hour2_temp = hour2+hour
+        ### hour2_temp[hour2_temp >= 48] -= 48
+        ### hour2_temp[hour2_temp >= 24] -= 24
+        ### for ihour in np.arange(24):
+        ###   emis_data[hour2_temp == ihour] *= hourly_factors[sec][ihour]
+        ## for ind, XLON_temp in np.ndenumerate(XLON):
+        ##   if XLON_temp < 360.:
+        ##     XLON_temp += 360.
+        ##   dhour_loc = int(round(XLON_temp/15.0))
+        ##   hour2 = hour+dhour_loc
+        ##   while hour2 >= 24:
+        ##     hour2 -= 24
+        ##   emis_data[ind] *= hourly_factors[sec][hour2]
+        # 
+        new_keyname = Create_Hourly_Keyname(keyname,dt_temp) 
+        hourly_keynames.append(new_keyname)
+        Add_EmisData_Dictionary(emis_dict,new_keyname,emis_data,'ug/m2/sec',\
+                                XLON, XLAT )
+        dt_temp += timedelta(hours=int(dhour))
+      # END of while dt_temp <= end_dt:
+    # END of for keyname in keyname_list:
+    
+    # Delete unnecessary emis_dict[keyname]
+    
+    for keyname in keyname_list:
+      del emis_dict[keyname]
+    
+    #
+    #--------
+    #
+    # sorted_key_list = [] 
+    # for key in emis_dict:
+    #   sorted_key_list.append(key)
+    # #  plot_emis_dict(key)
+    # for ikey, key in enumerate(sorted(sorted_key_list)):
+    #   print 'check : ',ikey, key
+    # raw_input()
+    #
+    #--------
+    #
+    #======== DONE: COPY ABOVE TO CREATE a emis_dict[keyname] for VIIRS BC flr data ========
+    #         DONE: adapt ABOVE for VIIRS BC flr data 
+    #
+
+
+
+
+
     #--------------------------------------------------------------------------------
     #
     # INTERPOLATION : (lon,lat,367)[daily] --> (lon,lat)[hourly] 
@@ -9213,7 +9490,12 @@ for iiday in np.arange(nday/deltaday+1):
     # for ikey, key in enumerate(sorted(sorted_key_list)):
     #   print 'check : ',ikey, key
     # raw_input()
-    # 
+    #
+    #--------
+
+
+
+
     #--------------------------------------------------------------------------------
     #
     # INTERPOLATION : (lon,lat)[yeary] --> (lon,lat)[hourly]
@@ -9238,7 +9520,7 @@ for iiday in np.arange(nday/deltaday+1):
       dims = emis_dict[keyname]['voc']['dims']
       units= emis_dict[keyname]['voc']['units'].lower()
       if len(dims) == 2 and keyname not in hourly_keynames and 'GFED' not in keyname:
-        print( keyname, emis_dict[keyname]['voc']['units'].lower(),' <---- check')
+        ### print( keyname, emis_dict[keyname]['voc']['units'].lower(),' <---- check')
         keyname_list.append(keyname)
     #raw_input()
     
@@ -9403,8 +9685,8 @@ for iiday in np.arange(nday/deltaday+1):
             # keyname : <sec>-<INVENTORY:HTAP,ECLIPSE etc>-<spec>-<YYYY-MM-DD_hh:00:00>
               keyname_spec = keyname.split('-')[2]
               if keyname_spec in spec_choices:
-                if spec == 'ORG-ORGJ-OM-OC':
-                  print('check xxx : ',keyname_spec, keyname)
+                ### if spec == 'ORG-ORGJ-OM-OC':
+                ###   print('check xxx : ',keyname_spec, keyname)
                 list_keyname2sum.append(keyname)
             else:
               if 'DMS_OC' in keyname:
