@@ -1,0 +1,72 @@
+Inputs
+
+wrfdir  = .... : directory where you have namelist.input and wrfinput
+out_dir = .... : directory where you want to create wrfchemi output files
+
+--------------------------------------------------------------------------------
+
+Inventories to use: True or False
+
+Set True to use the inventory
+
+REAS_ANTH_VOC         = False
+REAS_ANTH_Other       = False
+HTAP_ANTH_VOC         = False
+HTAP_ANTH_Other       = False
+HTAP_SHIP_AIR_VOC     = False
+HTAP_SHIP_AIR_Other   = False
+ECLIPSE_ANTH_VOC      = True
+ECLIPSE_ANTH_Other    = True
+ECLIPSEinUse          = True
+HUANG_BC_EMISSION     = False
+ECLIPSE_RCP60_SHP     = False
+POLMIP_DAILY_SOIL_NO  = True
+POLMIP_DAILY_VOLC_SO2 = True
+LANA_MONTHLY_DMS      = True
+GFED_FIRE             = False
+
+-----------------------------------------------------------------------------------
+
+How to run
+
+This script should be run in a batch mode with multiple processors
+if your domain is large and the simulation period is long.
+But you should also understand that the memory required becomes quite significant.
+An example of a SLURM script to launch create_wrfchemi.py3 on SPIRIT is given below.
+In this example, 4 processors with 50GB of memory are used.
+There may be some additional python modules you need to install to run this script.
+On SPIRIT, I cloned python/meso-3.9 and installed necessary modules.  
+
+--------------- Start of example ------------------------------
+#!/bin/bash
+
+#SBATCH --job-name=PythonEmission           # nom du job
+#SBATCH --partition=zen4                    # Nom d'une partition pour une exÃ©tion cpu
+#SBATCH --ntasks=4                          # nombre de taches
+#SBATCH --ntasks-per-node=4                 # nombre de taches MPI par noeud
+#SBATCH --mem=50GB                          # memory limit
+#SBATCH --time=24:00:00                     # temps d execution maximum demande (HH:MM:SS)
+#SBATCH --output=PythonEmission%j.out       # nom du fichier de sortie
+#SBATCH --error=PythonEmission%j.error      # nom du fichier d'erreur (ici en commun avec la sortie)
+
+
+# Link the necessary files from the SI directory
+
+
+module purge
+module load python/meso-3.9
+conda activate my_python3
+
+mpirun python create_wrfchemi.py3
+
+------------------ End of example -------------------------------
+
+In the very first run, this script creates intermediate files which contain area ratios of overlapping cells between wrf grid and grid cells used in inventory. This calculation is necessary for the interpolation of emission values from inventory onto WRF cells, but is very time consuming. 
+In the very first run, the script creates script data files (*.npy) and stores area ratios. From the second time, it only reads in the data from *.npy files to save time.
+*.npy files remain in the directory where you have create_wrfchemi.py3. 
+When you need to work on a different domain, you should delete *.npy files. Otherwise, you would get an error message, or if not, the outcome is erroneous. 
+wrfchemi files are created in directory "out_dir" as specified in the script.  
+
+
+
+
